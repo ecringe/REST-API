@@ -16,7 +16,28 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/v1/students", (req, res) => {
-    res.json(students);
+    const { age, course, page = 1, limit = 10 } = req.query;
+
+    let result = students;
+    if (age) {
+        result = result.filter((s) => s.age === Number(age));
+    }
+    if (course) {
+        result = result.filter(
+        (s) => s.course.toLowerCase() === course.toLowerCase()
+        );
+    }
+
+    const p = Number(page);
+    const l = Number(limit);
+    const start = (p - 1) * l;
+
+    res.json({
+        total: result.length,
+        page: p,
+        limit: l,
+        data: result.slice(start, start + l)
+    })
 });
 
 app.get("/api/v1/students/:id", (req, res) => {
