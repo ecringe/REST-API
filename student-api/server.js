@@ -19,6 +19,19 @@ app.get("/api/v1/students", (req, res) => {
     res.json(students);
 });
 
+app.get("/api/v1/students/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const student = students.find((s) => s.id === id);
+
+    if (!student) {
+        return res.status(404).json({
+            success: false,
+            message: "Оюутан олдсонгүй"
+        });
+    }
+    res.json(student);
+});
+
 app.listen(PORT, () => {
     console.log(`Server http://localhost:${PORT} дээр ажиллаж байна`);
 });
