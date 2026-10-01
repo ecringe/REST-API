@@ -48,6 +48,7 @@ app.post("/api/v1/students", (req, res) => {
     res.status(201).json(student);
 });
 
+//specific student id
 app.get("/api/v1/students/:id", (req, res) => {
     const id = Number(req.params.id);
     const student = students.find((s) => s.id === id);
@@ -59,6 +60,38 @@ app.get("/api/v1/students/:id", (req, res) => {
         });
     }
     res.json(student);
+});
+
+app.put("/api/v1/students/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const index = students.findIndex((s) => s.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            success: false,
+            message: "Оюутан олдсонгүй"
+        });
+    }
+
+    const { name, age, course } = req.body || {};
+    students[index] = { id, name, age, course };
+
+    res.json(students[index]);
+});
+
+app.delete("/api/v1/students/:id", (req, res) => {
+    const id = Number(req.params.id);
+    const index = students.findIndex((s) => s.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            success: false,
+            message: "Оюутан олдсонгүй"
+        });
+    }
+
+    students.splice(index, 1);
+    res.status(204).send();
 });
 
 app.listen(PORT, () => {
