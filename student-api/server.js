@@ -40,6 +40,14 @@ app.get("/api/v1/students", (req, res) => {
     })
 });
 
+app.post("/api/v1/students", (req, res) => {
+    const { name, age, course } = req.body || {};
+    const student = { id: nextId++, name, age, course };
+
+    students.push(student);
+    res.status(201).json(student);
+});
+
 app.get("/api/v1/students/:id", (req, res) => {
     const id = Number(req.params.id);
     const student = students.find((s) => s.id === id);
